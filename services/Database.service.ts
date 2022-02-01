@@ -13,7 +13,7 @@ export const DB_SERVICE_TOKEN = new Token<DatabaseService>();
 @Service()
 export class DatabaseService {
 
-  pool: Pool;
+  pool?: Pool;
   poolClient?: PoolClient;
 
   constructor() {

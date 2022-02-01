@@ -2,20 +2,20 @@ export class Todo {
 
   private id?: number;
   private title?: string;
-  private isDone?: boolean;
+  private status?: string;
   private createDate?: number;
 
-  constructor(id?: number, title?: string, isDone?: boolean, createDate?: number) {
+  constructor(id?: number, title?: string, status?: string, createDate?: number) {
     this.id = id || 0;
     this.title = title || "";
-    this.isDone = isDone || false;
+    this.status = status || "pending";
     this.createDate = createDate || Date.now();
   }
 
   public fromJSON(requestBody: any): Todo {
     this.id = requestBody.id ?? "";
     this.title = requestBody.title ?? "";
-    this.isDone = requestBody.isDone ?? "";
+    this.status = requestBody.status ?? "";
     this.createDate = requestBody.createDate ?? "";
     return this;
   }
@@ -34,11 +34,11 @@ export class Todo {
     this.title = newTitle;
   }
 
-  public getIsDone(): boolean {
-    return this.isDone!;
+  public getStatus(): string {
+    return this.status!;
   }
-  public setIsDone(newIsDone: boolean): void {
-    this.isDone = newIsDone;
+  public setStatus(newStatus: string): void {
+    this.status = newStatus;
   }
 
   public getCreateDate(): number {
