@@ -1,6 +1,6 @@
 # bluelibs-foundation-todos
 
-This application provides making CRUD operations on Todo models with the power of Bluelibs.
+This application provides making CRUD operations on Todo model with the power of Bluelibs.
 ###### (CRUD -> Create, Read, Update, Delete)
 
 __*Note:*__
@@ -15,7 +15,7 @@ Run docker container:
 
 `docker run --name postgresql -e POSTGRES_PASSWORD=<YOUR_DB_PASSWORD> -d -p 5432:5432 postgres`
 
-after that here are your Database cnfigurations:
+after that here are your Database configurations:
 
 ```
 Host: 127.0.0.1(localhost)
