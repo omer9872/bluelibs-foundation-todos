@@ -1,22 +1,18 @@
 import {
   Service,
-  Inject,
-  Token,
-  ContainerInstance
+  Inject
 } from '@bluelibs/core';
-import { DatabaseService, DB_SERVICE_TOKEN } from './Database.service';
+import { DatabaseService } from './Database.service';
 import { Todo } from '../models/Todo';
 import { QueryResult } from 'pg';
-
-export const TODO_SERVICE_TOKEN = new Token<TodoService>();
 
 @Service()
 export class TodoService {
 
+  @Inject(() => DatabaseService)
   private databaseService?: DatabaseService;
 
-  constructor(@Inject(TODO_SERVICE_TOKEN) container: ContainerInstance) {
-    this.databaseService = container.get(DB_SERVICE_TOKEN);
+  constructor() {
     console.log("TodoService - TodoService service is initi1alized...")
   }
 

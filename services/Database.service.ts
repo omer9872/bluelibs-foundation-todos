@@ -1,14 +1,8 @@
 import {
-  Bundle,
-  Service,
-  ContainerInstance,
-  Token,
-  Inject
+  Service
 } from '@bluelibs/core';
 import { Pool, PoolClient } from 'pg';
 import ENV from '../env';
-
-export const DB_SERVICE_TOKEN = new Token<DatabaseService>();
 
 @Service()
 export class DatabaseService {

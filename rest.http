@@ -1,4 +1,4 @@
-GET http://localhost:5000/todo/1 HTTP/1.1
+GET http://localhost:5000/todo/2 HTTP/1.1
 content-type: application/json
 
 ###
@@ -12,7 +12,7 @@ POST http://localhost:5000/todo HTTP/1.1
 content-type: application/json
 
 {
-    "title": "third todo !"
+    "title": "first todo !"
 }
 
 ###
@@ -21,7 +21,7 @@ PUT http://localhost:5000/todo/7 HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Finally Done with it ! - second todo !",
+    "title": "done - second todo !",
     "status":"done"
 }
 

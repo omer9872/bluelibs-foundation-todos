@@ -1,8 +1,10 @@
 import {
   Bundle,
 } from '@bluelibs/core';
-import { DatabaseService, DB_SERVICE_TOKEN } from '../services/Database.service';
-import { TodoService, TODO_SERVICE_TOKEN } from '../services/Todo.service';
+import { DatabaseService } from '../services/Database.service';
+import { TodoService, } from '../services/Todo.service';
+
+import { DB_SERVICE_TOKEN, TODO_SERVICE_TOKEN } from '../services/Service.tokens';
 
 export class AppBundle extends Bundle {
   async prepare() {

@@ -1,8 +1,9 @@
 import { HTTPBundle, RouteType } from '@bluelibs/http-bundle';
 import { Todo } from '../models/Todo';
 
-import { TodoService, TODO_SERVICE_TOKEN } from '../services/Todo.service';
+import { TodoService } from '../services/Todo.service';
 import { AppBundle } from '../bundles/App.bundle';
+import { TODO_SERVICE_TOKEN } from '../services/Service.tokens';
 
 export const todoRoute = new HTTPBundle({ port: 5000 });
 const routes: Array<RouteType> = [
