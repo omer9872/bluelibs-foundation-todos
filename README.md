@@ -5,22 +5,27 @@ This application provides making CRUD operations on Todo model with the power of
 
 __*Note:*__
 
-If you using Docker you can quickly create PostgreSQL Database with following docker commands:
+If you using Docker you can quickly create MongoDB Database with following docker commands:
 
-First pull postgress image:
+First pull official mongodb image:
 
-`docker pull postgres`
+`docker pull mongo`
 
 Run docker container:
 
-`docker run --name postgresql -e POSTGRES_PASSWORD=<YOUR_DB_PASSWORD> -d -p 5432:5432 postgres`
+-d -> Run container in detached(background) mode
 
-after that here are your Database configurations:
+-p -> Publish container's port on port 27017 in host.
+
+`docker run -d -p 27017:27017 mongo`
+
+after that just enter your local connection string inside of MongoBundle like below:
 
 ```
-Host: 127.0.0.1(localhost)
-Database Name: postgres(Default)
-User Name: postgres(Default)
-Database Port: 5432
-Password: <YOUR_DB_PASSWORD>
+...
+new MongoBundle({
+  uri: "mongodb://localhost:27017/test",
+  ...
+}),
+...
 ```
