@@ -2,34 +2,28 @@ import {
   Service,
   Inject
 } from '@bluelibs/core';
-import { DatabaseService } from './Database.service';
 import { Todo } from '../models/Todo';
-import { QueryResult } from 'pg';
+import { TodosCollection } from '../collections/todo.collection';
 
 @Service()
 export class TodoService {
 
-  @Inject(() => DatabaseService)
-  private databaseService?: DatabaseService;
+  @Inject(() => TodosCollection)
+  private todosCollection?: TodosCollection;
 
   constructor() {
     console.log("TodoService - TodoService service is initi1alized...")
   }
 
   insertTodo(newTodo: Todo) {
-    return new Promise((resolve, reject): any => {
+    return new Promise(async (resolve, reject): Promise<any> => {
       try {
-        this.databaseService!.poolClient!.query("INSERT INTO todos(title) VALUES($1)", [newTodo.getTitle()])
-          .then((result: QueryResult) => {
-            if (result.rowCount === 1) {
-              return resolve(true);
-            } else {
-              return reject(new Error("error occured while inserting new todo"))
-            }
-          })
-          .catch((err: any) => {
-            return reject(err)
-          })
+        let insertResult = await this.todosCollection?.insertOne(newTodo.asJSON());
+        if (insertResult?.acknowledged) {
+          return resolve(true);
+        } else {
+          return resolve(false);
+        }
       } catch (err: any) {
         return reject(err)
       }
@@ -37,19 +31,10 @@ export class TodoService {
   }
 
   getTodo(todo: Todo) {
-    return new Promise((resolve, reject): any => {
+    return new Promise(async (resolve, reject): Promise<any> => {
       try {
-        this.databaseService!.poolClient!.query("SELECT * FROM todos WHERE id=$1", [todo.getID()])
-          .then((result: QueryResult) => {
-            if (result.rowCount === 1) {
-              return resolve(result.rows[0]);
-            } else {
-              return reject(new Error("error occured while selecting todo"))
-            }
-          })
-          .catch((err: any) => {
-            return reject(err)
-          })
+        let cursor = await this.todosCollection?.find({ _id: todo.getID() });
+        return resolve(await cursor?.toArray());
       } catch (err: any) {
         return reject(err)
       }
@@ -57,15 +42,10 @@ export class TodoService {
   }
 
   getTodos() {
-    return new Promise((resolve, reject): any => {
+    return new Promise(async (resolve, reject): Promise<any> => {
       try {
-        this.databaseService!.poolClient!.query("SELECT * FROM todos")
-          .then((result: QueryResult) => {
-            return resolve(result.rows);
-          })
-          .catch((err: any) => {
-            return reject(err)
-          })
+        let cursor = await this.todosCollection?.find({});
+        return resolve(await cursor?.toArray());
       } catch (err: any) {
         return reject(err)
       }
@@ -73,19 +53,11 @@ export class TodoService {
   }
 
   updateTodo(todo: Todo) {
-    return new Promise((resolve, reject): any => {
+    return new Promise(async (resolve, reject): Promise<any> => {
       try {
-        this.databaseService!.poolClient!.query("UPDATE todos SET title=$1, status=$2 WHERE id=$3", [todo.getTitle(), todo.getStatus(), todo.getID()])
-          .then((result: QueryResult) => {
-            if (result.rowCount === 1) {
-              return resolve(true);
-            } else {
-              return reject(new Error("error occured while updating todo"))
-            }
-          })
-          .catch((err: any) => {
-            return reject(err)
-          })
+        let result = await this.todosCollection?.findOneAndUpdate({ _id: todo.getID() }, { $set: { title: todo.getTitle(), status: todo.getStatus() } });
+        console.log(result);
+        return resolve(true);
       } catch (err: any) {
         return reject(err)
       }
@@ -93,19 +65,10 @@ export class TodoService {
   }
 
   deleteTodo(todo: Todo) {
-    return new Promise((resolve, reject): any => {
+    return new Promise(async (resolve, reject): Promise<any> => {
       try {
-        this.databaseService!.poolClient!.query("DELETE FROM todos WHERE id=$1", [todo.getID()])
-          .then((result: QueryResult) => {
-            if (result.rowCount === 1) {
-              return resolve(true);
-            } else {
-              return reject(new Error("error occured while deleting todo"))
-            }
-          })
-          .catch((err: any) => {
-            return reject(err)
-          })
+        let result = await this.todosCollection?.findOneAndDelete({ _id: todo.getID() });
+        return resolve(true);
       } catch (err: any) {
         return reject(err)
       }

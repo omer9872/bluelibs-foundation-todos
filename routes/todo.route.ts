@@ -1,12 +1,11 @@
 import { HTTPBundle, RouteType } from '@bluelibs/http-bundle';
 import { Todo } from '../models/Todo';
-
 import { TodoService } from '../services/Todo.service';
 import { AppBundle } from '../bundles/App.bundle';
 import { TODO_SERVICE_TOKEN } from '../services/Service.tokens';
+import { ObjectID } from '@bluelibs/mongo-bundle';
 
-export const todoRoute = new HTTPBundle({ port: 5000 });
-const routes: Array<RouteType> = [
+export const todoRoutes: Array<RouteType> = [
   {
     type: "get",
     path: "/todo",
@@ -27,7 +26,7 @@ const routes: Array<RouteType> = [
     path: "/todo/:id",
     async handler(container, req, res, next) {
       const todoService: TodoService = container.get(AppBundle).get(TODO_SERVICE_TOKEN);
-      todoService.getTodo(new Todo(parseInt(req.params.id)))
+      todoService.getTodo(new Todo(new ObjectID(req.params.id)))
         .then((result) => {
           res.status(200).json({ todo: result });
         })
@@ -44,7 +43,11 @@ const routes: Array<RouteType> = [
       const todoService: TodoService = container.get(AppBundle).get(TODO_SERVICE_TOKEN);
       todoService.insertTodo(new Todo().fromJSON(req.body))
         .then((result) => {
-          res.sendStatus(200);
+          if (result) {
+            res.sendStatus(200);
+          } else {
+            res.sendStatus(500);
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -58,7 +61,7 @@ const routes: Array<RouteType> = [
     async handler(container, req, res, next) {
       const todoService: TodoService = container.get(AppBundle).get(TODO_SERVICE_TOKEN);
       const todo = new Todo().fromJSON(req.body);
-      todo.setID(parseInt(req.params.id));
+      todo.setID(new ObjectID(req.params.id));
       todoService.updateTodo(todo)
         .then((result) => {
           res.sendStatus(200);
@@ -74,7 +77,7 @@ const routes: Array<RouteType> = [
     path: "/todo/:id",
     async handler(container, req, res, next) {
       const todoService: TodoService = container.get(AppBundle).get(TODO_SERVICE_TOKEN);
-      todoService.deleteTodo(new Todo(parseInt(req.params.id)))
+      todoService.deleteTodo(new Todo(new ObjectID(req.params.id)))
         .then((result) => {
           res.sendStatus(204);
         })
@@ -85,6 +88,3 @@ const routes: Array<RouteType> = [
     },
   },
 ];
-
-
-todoRoute.addRoutes(routes);

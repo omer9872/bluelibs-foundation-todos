@@ -14,12 +14,17 @@
     "@bluelibs/core": "^1.2.5",
     "@bluelibs/http-bundle": "^1.0.2",
     "@bluelibs/logger-bundle": "^1.1.0",
-    "dotenv": "^15.0.0",
-    "pg": "^8.7.1"
+    "@bluelibs/mongo-bundle": "^1.4.2",
+    "@bluelibs/nova": "^1.4.0",
+    "@bluelibs/security-bundle": "^1.1.1",
+    "@bluelibs/security-mongo-bundle": "^1.2.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^15.0.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/node": "^17.0.13",
-    "@types/pg": "^8.6.4",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.5"
   }
 }
