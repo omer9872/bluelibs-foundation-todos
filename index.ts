@@ -8,7 +8,6 @@ import { SecurityBundle } from '@bluelibs/security-bundle';
 import { PermissionsCollection, SecurityMongoBundle, SessionsCollection, UsersCollection } from '@bluelibs/security-mongo-bundle';
 import './env';
 import { PermissionService, SecurityService } from '@bluelibs/security-bundle';
-import { HTTPBundle } from '@bluelibs/http-bundle';
 
 const kernel = new Kernel({
   bundles: [
@@ -31,7 +30,6 @@ kernel.init().then(() => {
 
   console.log("kernel is active...");
   let container = kernel.container;
-  container.get(PermissionService);
   /* now you can play with container... */
 
 });
