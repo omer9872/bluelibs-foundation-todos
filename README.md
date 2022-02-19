@@ -1,7 +1,29 @@
 # bluelibs-foundation-todos
 
-This application provides making CRUD operations on Todo model with the power of Bluelibs.
+This application provides making CRUD operations on MongoDB with the power of Bluelibs and GraphQL.
 ###### (CRUD -> Create, Read, Update, Delete)
+
+via GraphQL:
+
+Playground link: *http://localhost:4000/graphql/api*
+
+via HTTP Request:
+
+POST *http://localhost:5000/auth/register* -> Create new user with security service.
+
+POST *http://localhost:5000/auth/login* -> Authenticate user with security service.
+
+POST *http://localhost:5000/auth/logout* -> Remove authenticated session with security service.
+
+GET *http://localhost:5000/todo/:id* -> Fetch todo by id.
+
+GET *http://localhost:5000/todo?page=2&count=3* -> Fetch todos.
+
+POST *http://localhost:5000/todo* -> Create new Todo.
+
+PUT *http://localhost:5000/todo/:id* -> Update todo with req.params.id and req.body
+
+DELETE *http://localhost:5000/todo/:id* -> Delete Todo.
 
 __*Note:*__
 
