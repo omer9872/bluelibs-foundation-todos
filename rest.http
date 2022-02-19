@@ -21,7 +21,7 @@ content-type: application/json
 ### USER LOGOUT
 POST http://localhost:5000/auth/logout HTTP/1.1
 content-type: application/json
-authorization: Bearer Corp1OQ35wfdWxURxTekrPljaozq6Q1y4nF2Rew12oLU8vsv5BqlpSlOr6LQcypq
+authorization: Bearer OQsdAD0ffeqYVFmTJUT5ytBwYJVtMpUeeUeKUDfiKpHCbITabd4gNMPytso5zzWy
 
 {
     "email":"omer@gmail.com",
@@ -35,7 +35,7 @@ content-type: application/json
 
 ###
 
-GET http://localhost:5000/todo HTTP/1.1
+GET http://localhost:5000/todo?page=2&count=3 HTTP/1.1
 content-type: application/json
 
 ###
@@ -44,7 +44,7 @@ POST http://localhost:5000/todo HTTP/1.1
 content-type: application/json
 
 {
-    "title": "first todo !"
+    "title": "fifth todo !"
 }
 
 ###

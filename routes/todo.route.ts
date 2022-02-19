@@ -5,20 +5,38 @@ import { AppBundle } from '../bundles/App.bundle';
 import { TODO_SERVICE_TOKEN } from '../services/Service.tokens';
 import { ObjectID } from '@bluelibs/mongo-bundle';
 
+interface IGetQuery {
+  page?: string;
+  count?: string;
+}
+
 export const todoRoutes: Array<RouteType> = [
   {
     type: "get",
     path: "/todo",
     async handler(container, req, res, next) {
-      const todoService: TodoService = container.get(AppBundle).get(TODO_SERVICE_TOKEN);
-      todoService.getTodos()
-        .then((result) => {
-          res.status(200).json({ todos: result });
-        })
-        .catch((err) => {
+      const queryParams: IGetQuery = req.query;
+      if (queryParams.page && queryParams.count) {
+        try {
+          const page: number = parseInt(queryParams.page);
+          const count: number = parseInt(queryParams.count);
+          const todoService: TodoService = container.get(AppBundle).get(TODO_SERVICE_TOKEN);
+          todoService.getTodos(page, count)
+            .then((result) => {
+              res.status(200).json({ page: page, count: count, itemCount: result.length, todos: result });
+            })
+            .catch((err) => {
+              console.log(err);
+              res.sendStatus(500);
+            })
+
+        } catch (err) {
           console.log(err);
-          res.sendStatus(500);
-        })
+          res.status(400).json({ message: 'invalid query parameters' });
+        }
+      } else {
+        res.status(400).json({ message: 'invalid query parameters' });
+      }
     },
   },
   {

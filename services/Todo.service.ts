@@ -34,18 +34,30 @@ export class TodoService {
     return new Promise(async (resolve, reject): Promise<any> => {
       try {
         let cursor = await this.todosCollection?.find({ _id: todo.getID() });
-        return resolve(await cursor?.toArray());
+        if (cursor) {
+          const todos: Array<any> = await cursor.toArray();
+          return resolve(todos[0]);
+        }
       } catch (err: any) {
         return reject(err)
       }
     })
   }
 
-  getTodos() {
+  getTodos(page: number, count: number): Promise<Array<any>> {
     return new Promise(async (resolve, reject): Promise<any> => {
       try {
-        let cursor = await this.todosCollection?.find({});
-        return resolve(await cursor?.toArray());
+        let cursor = await this.todosCollection?.find({}, { limit: page * count });
+        if (cursor) {
+          let todos = await cursor.toArray();
+          if (todos.slice((page - 1) * count).length > 0) {
+            return resolve(todos.slice((page - 1) * count));
+          } else {
+            return resolve([]);
+          }
+        } else {
+          return resolve([]);
+        }
       } catch (err: any) {
         return reject(err)
       }

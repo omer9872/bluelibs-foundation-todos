@@ -1,12 +1,5 @@
 import { ObjectID } from "@bluelibs/mongo-bundle";
 
-export type TodoType = {
-  _id: ObjectID;
-  title: string;
-  status: string;
-  createDate: number;
-}
-
 export class Todo {
 
   private _id?: ObjectID;
@@ -31,6 +24,7 @@ export class Todo {
 
   public asJSON(): any {
     return {
+      _id: this._id,
       title: this.title,
       status: this.status,
       createDate: this.createDate,

@@ -1,7 +1,6 @@
 import { RouteType } from '@bluelibs/http-bundle';
-import { SecurityService, UserId } from '@bluelibs/security-bundle';
+import { PermissionService, SecurityService, UserId } from '@bluelibs/security-bundle';
 import { IUser } from '@bluelibs/security-bundle';
-
 import bcrypt from 'bcryptjs';
 
 declare module "@bluelibs/security-bundle" {
@@ -13,6 +12,7 @@ declare module "@bluelibs/security-bundle" {
 }
 
 export const authRoutes: Array<RouteType> = [
+  /* LOGIN... */
   {
     type: "post",
     path: "/auth/login",
@@ -29,34 +29,38 @@ export const authRoutes: Array<RouteType> = [
         })
           .then(async (passStrategy) => {
             /* check if password is correct or not... */
-            const compareResult: boolean = await bcrypt.compare(password, passStrategy?.strategy.passwordHash);
-            if (compareResult) {
-              const token = await securityService.login(passStrategy?.userId, {
-                /* set session datas in here... */
-                expiresIn: '2h',
-                authenticationStrategy: 'password',
-              })
-              res.status(200).json({ message: 'login successful', token: token });
+            if (passStrategy) {
+              const compareResult: boolean = await bcrypt.compare(password, passStrategy?.strategy.passwordHash);
+              if (compareResult) {
+                const token = await securityService.login(passStrategy?.userId, {
+                  /* set session datas in here... */
+                  expiresIn: '2h',
+                  authenticationStrategy: 'password',
+                })
+                res.status(200).json({ message: 'login successful', token: token });
+              } else {
+                res.status(401).json({ message: 'invalid credentials' });
+              }
             } else {
-              res.status(401).json({ message: 'invalid credentials' });
+              res.status(404).json({ message: 'user not found' });
             }
           })
           .catch((err: any) => {
-            res.status(500).json({ message: 'an error occured in server' });
+            console.log(err);
             res.status(500).json({ message: 'an error occured in server' });
           })
-
       } else {
         res.status(400).json({ message: 'please enter email and password' });
       }
     },
   },
+  /* LOGOUT... */
   {
     type: "post",
     path: "/auth/logout",
     async handler(container, req, res, next) {
       const securityService: SecurityService = container.get(SecurityService);
-      const rawToken: string = req.headers.authorization;
+      const rawToken: string | undefined = req.headers.authorization;
       if (rawToken) {
         const token: string = rawToken.split(' ')[1];
         await securityService.logout(token);
@@ -66,6 +70,7 @@ export const authRoutes: Array<RouteType> = [
       }
     },
   },
+  /* REGISTER... */
   {
     type: "post",
     path: "/auth/register",
@@ -75,6 +80,8 @@ export const authRoutes: Array<RouteType> = [
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
+        roles: ['USER'],
+        isEnabled: true
       };
       const password: string = req.body.password;
       /* create new user... */

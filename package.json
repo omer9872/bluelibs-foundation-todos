@@ -11,15 +11,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@bluelibs/apollo-bundle": "^1.2.2",
     "@bluelibs/core": "^1.2.5",
+    "@bluelibs/graphql-bundle": "^1.0.0",
     "@bluelibs/http-bundle": "^1.0.2",
     "@bluelibs/logger-bundle": "^1.1.0",
     "@bluelibs/mongo-bundle": "^1.4.2",
     "@bluelibs/nova": "^1.4.0",
     "@bluelibs/security-bundle": "^1.1.1",
     "@bluelibs/security-mongo-bundle": "^1.2.0",
+    "apollo-server-express": "^3.6.3",
     "bcryptjs": "^2.4.3",
-    "dotenv": "^15.0.0"
+    "dotenv": "^15.0.0",
+    "graphql": "^15.8.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
